@@ -17,7 +17,7 @@ while True:
 
     elif choice == 2:
         # Case 2: Find Maximum of Three Integers
-        # Input three integers from the user
+
         num1 = int(input("Enter the first integer: "))
         num2 = int(input("Enter the second integer: "))
         num3 = int(input("Enter the third integer: "))
@@ -43,7 +43,6 @@ while True:
         smallest_digit = None
         highest_digit = None
 
-        # Handle the case when the user enters 0 separately
         if user_input == 0:
             digit_count = 1
             smallest_digit = 0
@@ -87,73 +86,61 @@ while True:
         # Function to convert decimal to binary
         def decToBinary(dec):
             if dec == 0:
-                return '0'
-            binary = ''
+                return '0b0'  # Special case for 0
+            binary = ''  # Initialize an empty string to store the binary representation
             while dec > 0:
-                binary = str(dec % 2) + binary
+                binary = str(dec % 2) + binary  # Append the remainder to the left of the binary string
                 dec //= 2
-            return binary
+            return '0b' + binary  # Add '0b' prefix to indicate binary
 
-
-        # Function to convert binary to other bases (binary, octal, hex)
-        def binaryToN(bin_num, base_type):
+        # Function to convert binary to another base (octal or hexadecimal)
+        def binaryToN(binary, base_type):
             decimal = 0
             power = 0
-            if base_type == 'binary':
-                base = 2
-            elif base_type == 'octal':
-                base = 8
-            elif base_type == 'hex':
-                base = 16
-
-            for digit in reversed(bin_num):
+            base = 8 if base_type == 'octal' else 16  # Set the base to 8 for octal, 16 for hexadecimal
+            for digit in binary[::-1]:
                 decimal += int(digit) * (base ** power)
                 power += 1
-
-            if base_type == 'binary':
-                return bin(decimal)[2:]
-            elif base_type == 'octal':
-                return oct(decimal)[2:]
-            elif base_type == 'hex':
-                return hex(decimal)[2:]
+            return decimal
 
         # Function to convert decimal to octal
         def decToOctal(dec):
             if dec == 0:
-                return '0'
-            octal = ''
+                return '0o0'  # Special case for 0
+            octal = ''  # Initialize an empty string to store the octal representation
             while dec > 0:
-                octal = str(dec % 8) + octal
+                octal = str(dec % 8) + octal  # Append the remainder to the left of the octal string
                 dec //= 8
-            return octal
+            return '0o' + octal  # Add '0o' prefix to indicate octal
 
         # Function to convert decimal to hexadecimal
         def decToHex(dec):
             if dec == 0:
-                return '0'
+                return '0x0'  # Special case for 0
             hex_chars = '0123456789ABCDEF'
-            hex_string = ''
+            hexadecimal = ''  # Initialize an empty string to store the hexadecimal representation
             while dec > 0:
-                hex_string = hex_chars[dec % 16] + hex_string
+                remainder = dec % 16
+                hexadecimal = hex_chars[remainder] + hexadecimal  # Append the hex character to the left
                 dec //= 16
-            return hex_string
+            return '0x' + hexadecimal  # Add '0x' prefix to indicate hexadecimal
 
+        decimal = int(input("Enter a decimal number but not a floating number: "))
 
-        dec_value = int(input("Enter a decimal number but don't include a floating number: "))
-        binary_result = decToBinary(dec_value)
-        octal_result = decToOctal(dec_value)
-        hex_result = decToHex(dec_value)
-
+        binary_result = decToBinary(decimal)
         print(f"Decimal to Binary: {binary_result}")
+
+        octal_result = decToOctal(decimal)
         print(f"Decimal to Octal: {octal_result}")
-        print(f"Decimal to Hexadecimal: {hex_result}")
 
-        bin_num = input("Enter a binary number: ")
-        type = input("Enter the type of conversion (binary, octal, hex): ")
-        converted_result = binaryToN(bin_num, type)
-        print(f"{type.capitalize()} to Decimal: {converted_result}")
+        hexadecimal_result = decToHex(decimal)
+        print(f"Decimal to Hexadecimal: {hexadecimal_result}")
+
+        binary_input = input("Enter a binary number: ")
+        base_type = input("Enter the target base (octal or hexadecimal): ")
+        converted_decimal = binaryToN(binary_input, base_type)
+        print(f"{base_type.capitalize()} to Decimal: {converted_decimal}")
         print("\n")
-
 
     else:
         print("Invalid choice. Please enter 1, 2, 3, 4, 5, or 0 to exit.")
